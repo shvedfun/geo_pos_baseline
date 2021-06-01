@@ -2,7 +2,9 @@ import os
 import math
 import numpy as np
 import cv2
+import pyximport
 
+pyximport.install()
 from utilities.invert_flow import invert_flow
 
 
