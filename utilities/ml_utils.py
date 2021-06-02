@@ -53,6 +53,7 @@ class Dataset(BaseDataset):
         # create all paths with respect to RGB path ordering to maintain alignment of samples
         dataset_dir = Path(args.dataset_dir) / sub_dir
         rgb_paths = list(dataset_dir.glob(f"*_RGB.{args.rgb_suffix}"))
+        print(f'len dataset = {len(rgb_paths)}')
         if rgb_paths == []: rgb_paths = list(dataset_dir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
         agl_paths = list(
             pth.with_name(pth.name.replace("_RGB", "_AGL")).with_suffix(".tif")

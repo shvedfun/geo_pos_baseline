@@ -15,6 +15,11 @@ def downsample_images(args, downsample=2):
     rgb_paths = list(indir.glob(f"*_RGB.{args.rgb_suffix}"))
     if rgb_paths == []: rgb_paths = list(indir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
 
+    rgb_outs = list(outdir.glob(f"*_RGB.{args.rgb_suffix}"))
+    if rgb_outs == []: rgb_paths = list(outdir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
+
+    paths = [x for x in rgb_paths if x not in rgb_outs
+             ]
     for rgb_path in tqdm(rgb_paths):
 
         # load
@@ -39,7 +44,7 @@ def downsample_images(args, downsample=2):
         # save
         # units are NOT converted back here, so are in m
 #        save_image((outdir / rgb_path.name), rgb)
-        save_image((outdir / rgb_path.name.replace("j2k","tif")), rgb) # save as tif to be consistent with old code
+        save_image((outdir / rgb_path.name), rgb) #.replace("j2k","tif") save as tif to be consistent with old code
 
         save_image((outdir / agl_path.name), agl)
         with open((outdir / vflow_path.name), "w") as outfile:
