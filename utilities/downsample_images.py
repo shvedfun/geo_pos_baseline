@@ -13,14 +13,16 @@ def downsample_images(args, downsample=2):
 
     outdir.mkdir(exist_ok=True)
     rgb_paths = list(indir.glob(f"*_RGB.{args.rgb_suffix}"))
+    print(f'len(in) = {rgb_paths}')
     if rgb_paths == []: rgb_paths = list(indir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
 
     rgb_outs = list(outdir.glob(f"*_RGB.{args.rgb_suffix}"))
     if rgb_outs == []: rgb_paths = list(outdir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
+    print(f'len(out) = {rgb_outs}')
 
-    paths = [x for x in rgb_paths if x not in rgb_outs
-             ]
-    for rgb_path in tqdm(rgb_paths):
+    paths = [x for x in rgb_paths if x not in rgb_outs]
+    print(f'len(for_processed = {len(paths)}')
+    for rgb_path in tqdm(paths):
 
         # load
         agl_path = rgb_path.with_name(
@@ -44,7 +46,7 @@ def downsample_images(args, downsample=2):
         # save
         # units are NOT converted back here, so are in m
 #        save_image((outdir / rgb_path.name), rgb)
-        save_image((outdir / rgb_path.name), rgb) #.replace("j2k","tif") save as tif to be consistent with old code
+        save_image((outdir / rgb_path.name), rgb).replace("j2k","tif") #save as tif to be consistent with old code
 
         save_image((outdir / agl_path.name), agl)
         with open((outdir / vflow_path.name), "w") as outfile:
