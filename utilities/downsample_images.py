@@ -13,15 +13,15 @@ def downsample_images(args, downsample=2):
 
     outdir.mkdir(exist_ok=True)
     rgb_paths = list(indir.glob(f"*_RGB.{args.rgb_suffix}"))
-    print(f'len(in) = {rgb_paths}')
+    print(f'len(in) = {len(rgb_paths)}')
     if rgb_paths == []: rgb_paths = list(indir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
 
     rgb_outs = list(outdir.glob(f"*_RGB.{args.rgb_suffix}"))
     if rgb_outs == []: rgb_paths = list(outdir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
-    print(f'len(out) = {rgb_outs}')
+    print(f'len(out) = {len(rgb_outs)}')
 
-    paths = [x for x in rgb_paths if x not in rgb_outs]
-    print(f'len(for_processed = {len(paths)}')
+    paths = [x for x in rgb_paths if str(x) not in rgb_outs]
+    print(f'len(for_processed) = {len(paths)}')
     for rgb_path in tqdm(paths):
 
         # load
