@@ -17,13 +17,24 @@ def downsample_images(args, downsample=2):
     if rgb_paths == []: rgb_paths = list(indir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
 
     rgb_outs = list(outdir.glob(f"*_RGB.{args.rgb_suffix}"))
-    if rgb_outs == []: rgb_paths = list(outdir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
+    if rgb_outs == []: rgb_outs = list(outdir.glob(f"*_RGB*.{args.rgb_suffix}")) # original file names
     print(f'len(out) = {len(rgb_outs)}')
 
-    paths = [x for x in rgb_paths if str(x) not in rgb_outs]
-    print(f'len(for_processed) = {len(paths)}')
-    for rgb_path in tqdm(paths):
+    str_outs_tmp = [str(x) for x in rgb_outs]
+    str_outs = [x[x.rfind('\\')+1:x.rfind('.')] for x in str_outs_tmp]
+    paths =[]
+    for x in tqdm(rgb_paths):
+        print(f'str(x) = {str(x)}') #[x for x in rgb_paths if str(x) not in rgb_outs]
+        start = str(x).rfind('\\')
+        finish = str(x).rfind('.')
+        nm = str(x)[start+1:finish]
+        print(f'str(x)[start:finish] = {nm}')
+        if nm not in str_outs:
+            paths.append(x)
+    #print(f'paths = {paths}')
+    #print(f'len(for_processed) = {len(paths)}')
 
+    for rgb_path in tqdm(paths):
         # load
         agl_path = rgb_path.with_name(
             rgb_path.name.replace("_RGB", "_AGL")
@@ -46,7 +57,7 @@ def downsample_images(args, downsample=2):
         # save
         # units are NOT converted back here, so are in m
 #        save_image((outdir / rgb_path.name), rgb)
-        save_image((outdir / rgb_path.name), rgb).replace("j2k","tif") #save as tif to be consistent with old code
+        save_image((outdir / rgb_path.name), rgb)#.replace("j2k","tif") #save as tif to be consistent with old code
 
         save_image((outdir / agl_path.name), agl)
         with open((outdir / vflow_path.name), "w") as outfile:
