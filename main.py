@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "--save-period",
         type=int,
         help="epoch frequency to save model checkpoints",
-        default=2,
+        default=10,
     )
     parser.add_argument("--save-best", action="store_true", help="save best weights")
     parser.add_argument(
