@@ -408,10 +408,14 @@ class MSELoss(smp.utils.base.Loss):
 
 
 def train(args):
-
     torch.backends.cudnn.benchmark = True
-
     model = build_model(args)
+    print(f'args.model_path = {args.model_path}')
+    raise
+    if args.model_path is not None:
+        model_path = Path(args.model_path)
+        checkpoint = torch.load(model_path)
+        model.load_state_dict(checkpoint)
 
     train_dataset = Dataset(sub_dir=args.train_sub_dir, args=args)
     val_dataset = Dataset(sub_dir=args.valid_sub_dir, args=args)
