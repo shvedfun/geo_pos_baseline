@@ -411,8 +411,8 @@ def train(args):
     torch.backends.cudnn.benchmark = True
     model = build_model(args)
     print(f'args.model_path = {args.model_path}')
-    raise
     if args.model_path is not None:
+        print(f'Загружаю веса из {args.model_path}')
         model_path = Path(args.model_path)
         checkpoint = torch.load(model_path)
         model.load_state_dict(checkpoint)
